@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter ,
   Routes,
@@ -14,20 +14,25 @@ import menuItems from "./menusItems";
 import ProtectedRoute from "./protectedRoute";
 import "./layout.scss";
 import SideBar from "../Sidebar";
+import {useAuth } from "../../shared/authContext";
 // import Layout as cous from "../Layout";
 const { Header,Content } = Layout;
 
 const MainApp: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
+ 
+  const {authenticated} = useAuth();
   const elements = useRoutes(protectedRoutes)
+ 
   return (
     < >
+   
       <Routes>
         <Route path="/" element={nonProtectedRoutes.loginComponent.element} />
         <Route
           path={"/layout/*"}
           element={
-            <ProtectedRoute isSignedIn={true}>
+            <ProtectedRoute isSignedIn={authenticated}>
               <Layout className="main-wrapper">
                 <SideBar
                   collapsed={collapsed}
@@ -35,7 +40,7 @@ const MainApp: React.FC = () => {
                   menuItems={menuItems}
                 />
                 <Layout>
-                  <Header className="header">HEADER</Header>
+                  <Header className="header"></Header>
                   <Content className="containter">
                   {elements}
                   </Content>
@@ -48,6 +53,7 @@ const MainApp: React.FC = () => {
           }
         />
       </Routes>
+      
     </>
   );
 };

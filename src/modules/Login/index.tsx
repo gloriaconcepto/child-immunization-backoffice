@@ -1,11 +1,17 @@
 import React from "react";
 import { Card, Form, Input, Button } from "antd";
+import { useNavigate } from 'react-router-dom';
 
 import "./login.scss";
+import { mainProtectedRoute } from "../Routes/routes";
+import { useAuth } from "../../shared/authContext";
 const LoginPage: React.FC = () => {
   const [form] = Form.useForm();
+  const navigate = useNavigate()
+  const {login}=useAuth();
   const onFinish = () => {
-    console.log("submitting data");
+   login();
+    navigate(mainProtectedRoute.home.path);
   };
   type FieldType = {
     username?: string;
